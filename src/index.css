@@ -1,13 +1,719 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: sequel;
+  src: url(fonts/SequelSansRomanDisp.woff2);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: sequel2;
+  src: url(fonts/SequelSansSemiBoldDisp.woff2);
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html {
+  font-size: 10px;
+  font-family: sequel;
+  overflow-x: clip;
+}
+
+body::before {
+  animation: noise 1s steps(2) infinite;
+  background-image: url(https://www.barlow.agency/images/noise.png);
+  background-size: 40rem;
+  content: "";
+  height: calc(100% + 20rem);
+  left: -10rem;
+  pointer-events: none;
+  position: fixed;
+  top: -10rem;
+  width: calc(100% + 20rem);
+  z-index: 9999;
+}
+
+@keyframes noise {
+  0% {
+    transform: translate3d(0, 9rem, 0)
+  }
+
+  10% {
+    transform: translate3d(-1rem, -4rem, 0)
+  }
+
+  20% {
+    transform: translate3d(-8rem, 2rem, 0)
+  }
+
+  30% {
+    transform: translate3d(9rem, -9rem, 0)
+  }
+
+  40% {
+    transform: translate3d(-2rem, 7rem, 0)
+  }
+
+  50% {
+    transform: translate3d(-9rem, -4rem, 0)
+  }
+
+  60% {
+    transform: translate3d(2rem, 6rem, 0)
+  }
+
+  70% {
+    transform: translate3d(7rem, -8rem, 0)
+  }
+
+  80% {
+    transform: translate3d(-9rem, 1rem, 0)
+  }
+
+  90% {
+    transform: translate3d(6rem, -5rem, 0)
+  }
+
+  to {
+    transform: translate3d(-7rem, 0, 0)
+  }
+}
+
+.App {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.nav-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100px;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 6.5rem;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.logo-box h1 {
+  font-size: 3.2rem;
+  font-weight: 400;
+}
+
+.logo-box h1.logo-deactive {
+  display: none;
+}
+
+.logo-box h2 {
+  font-size: 3.5rem;
+  font-weight: 400;
+  display: none;
+  width: 30%;
+}
+
+.logo-box h2.logo-active {
+  display: block;
+  animation: moveUp 1s ease-in-out forwards;
+}
+
+@keyframes moveUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-box span {
+  color: transparent;
+  -webkit-text-stroke: .3px #fff;
+  font-weight: 100;
+}
+
+.menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+.square {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.square-active {
+  background-color: rgb(21, 2, 239);
+}
+
+.square-active img {
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.square:hover {
+  transform: rotate(90deg);
+}
+
+.menu-title {
+  font-size: 2.5rem;
+}
+
+.transform-menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: #000;
+  transform: translateY(100%);
+  transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.menu-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: #000;
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 6rem;
+  margin-right: 8rem;
+  line-height: 9rem;
+  text-align: left;
+  display: none;
+}
+
+
+.menu-items.menu-items-active {
+display: flex;
+animation: moveUp 1s ease-in-out forwards;
+}
+
+
+.menu-items a {
+  font-weight: 400;
+  font-size: 9rem;
+  text-align: left;
+  vertical-align: baseline;
+  word-spacing: 0px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu-items a:hover {
+  text-decoration:
+    underline 3px solid rgb(21, 2, 239);
+    color: rgb(21, 2, 239);
+}
+
+.menu-items a.selected {
+  text-decoration:
+    underline 3px solid rgb(21, 2, 239);
+    color: rgb(21, 2, 239);
+}
+
+.menu-title-2 {
+  position: absolute;
+  bottom: -10%;
+  font-size: 50rem;
+  color: #fff;
+  animation: move 20s infinite linear;
+}
+
+@keyframes move {
+  from {
+      left: 100%;
+  }
+
+  to {
+      left: -2500px;
+  }
+}
+
+.menu-title-2 span {
+  color: transparent;
+  -webkit-text-stroke: 4px #fff;
+  font-family: sequel2;
+  font-weight: 800;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.grid-item {
+  position: relative;
+  transition: transform 0.2s ease;
+  background-color: #fff;
+  font-size: 150%;
+  width: 700px;
+  height: 80vh;
+  cursor: grab;
+  user-select: none;
+  border: 1px solid #000;
+}
+
+.grid-item:hover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: .3;
+  z-index: 99;
+}
+
+.grid-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #7e786b;
+  opacity: 0.1;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+
+/*works*/
+
+.work-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.work-title {
+  position: relative;
+  width: 93%;
+  padding-top: 8rem;
+}
+
+.work-title h1 {
+  font-size: 14rem;
+  text-align: center;
+  letter-spacing: 6px;
+  color: rgb(21, 2, 239);
+  font-weight: 600;
+  font-stretch: 100%;
+}
+
+.work-title h1::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #000;
+  margin-top: 16rem;
+}
+
+.work-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 93%;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5rem;
+  width: 100%;
+}
+
+.work-item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.work-item img {
+  width: 40rem;
+  height: 40rem;
+  object-fit: cover;
+  overflow: hidden;
+  margin-top: 5rem;
+}
+
+.work-item-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.work-item-active img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 5rem;
+  margin-top: 0;
+}
+
+.work-item-active-button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  position: absolute;
+}
+
+.button-left {
+  background: url(https://resmim.net/cdn/2023/10/02/Sp0u1b.png);
+  background-size: cover;
+  left: 2%;
+}
+
+.button-right {
+  background: url(https://resmim.net/cdn/2023/10/02/Sp0api.png);
+  background-size: cover;
+  right: 2%;
+}
+
+.work-category {
+  position: absolute;
+  top: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.work-category ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  gap: 2rem;
+}
+
+.category-item {
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+.category-item-selected {
+  text-decoration: underline 3px solid rgb(21, 2, 239);
+}
+
+.work-item-active-close {
+  position: fixed;
+  top: 1%;
+  right: 1%;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: url(https://resmim.net/cdn/2023/09/29/ScP1o8.png);
+  background-size: cover;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+
+/*about*/
+
+.about-container {
+  position: relative;
+  font-family: sequel;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+.about-title {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(https://resmim.net/cdn/2023/10/02/SpVkwc.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.about-title h1 {
+  color: #fff;
+  font-size: 5rem;
+  text-align: center;
+  width: 50%;
+  margin-top: 20rem;
+}
+
+.about-title .menu-title-2 {
+  position: absolute;
+  bottom: -10%;
+  font-size: 45rem;
+  color: #fff;
+  animation: move 30s infinite linear;
+  z-index: 2;
+}
+
+.about-images {
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150vh;
+}
+
+
+.about-images img:nth-child(1){
+  position: absolute;
+  top: 0;
+  left: 6%;
+  width: 45%;
+}
+
+.about-images img:nth-child(2) {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 55%;
+  transform: translateY(-10%);
+}
+
+
+.about-text {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.about-text-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  transform: translateX(-15%);
+}
+
+.about-text-1 p {
+  font-size: 3.5rem;
+  width: 55%;
+}
+
+.about-text-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  flex-direction: column;
+  gap: 2rem;
+  transform: translateY(-30%);
+}
+
+.about-text-2 p {
+  font-size: 3.5rem;
+  width: 70%;
+}
+
+.about-locate {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(https://resmim.net/cdn/2023/10/03/SpAnrc.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15rem;
+  background-color: rgb(12,71,119);
+}
+
+
+.about-locate .right-col {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 5%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 15rem;
+  background-color: yellow;
+}
+
+
+
+.about-locate .right-col span:nth-child(1){
+  transform: translateX(-20%);
+}
+
+.about-locate .right-col span:nth-child(3){
+  transform: translateX(-20%);
+}
+
+.about-locate .left-col {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 5%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 15rem;
+  background-color: yellow;
+}
+
+.about-locate .left-col span:nth-child(1){
+  transform: translateX(-20%);
+}
+
+.about-locate .left-col span:nth-child(3){
+  transform: translateX(-20%);
+}
+
+
+.about-contact {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 10rem;
+}
+
+.about-contact h1 {
+  font-size: 15rem;
+  line-height: 14rem;
+  color: rgb(21, 2, 239);
+}
+
+.about-contact-group {
+  display: flex;
+  position: relative;
+}
+
+.about-contact-group h1:nth-child(1){
+  position: relative;
+  width: max-content;
+  cursor: pointer;
+}
+
+.about-contact-group h1:nth-child(1)::after{
+  content: "";
+  position: absolute;
+  bottom: -10%;
+  right: 0;
+  
+  width: 100%;
+  height: 15px;
+  background-color: rgb(21, 2, 239);
+}
+
+.about-contact-group h1:nth-child(1):hover::after{
+  background-color: #000;
+  animation: underline 1s ease-in-out forwards;
+}
+
+@keyframes underline {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
+
+.about-contact-group h1:nth-child(1):hover{
+  color: #000;
+}
+
